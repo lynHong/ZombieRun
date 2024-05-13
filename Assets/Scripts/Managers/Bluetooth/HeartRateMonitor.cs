@@ -99,7 +99,7 @@ public class HeartRateMonitor : MonoBehaviour
             {
                 if (data != null && data.Length > 1)
                 {
-                    int heartRate = data[8];
+                    int heartRate = data[8];   
                     //m_HeartrateText.text = $"Heart Rate: {heartRate} BPM";
                     m_heartRateUpdatedEvent.RaiseEvent(heartRate, this);
                 }
