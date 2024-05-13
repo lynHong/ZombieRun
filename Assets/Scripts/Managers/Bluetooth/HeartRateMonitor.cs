@@ -6,23 +6,18 @@ using UnityEngine.Events;
 
 public class HeartRateMonitor : MonoBehaviour
 {
-    [System.Serializable]
-    public class HeartRateEvent : UnityEvent<int> { }
-    public HeartRateEvent onHeartRateUpdated;
-
-    // 使用完整的128位UUID
-    private string heartRateServiceUUID = "000056FF-0000-1000-8000-00805F9B34FB";
-    private string heartRateCharacteristicUUID = "000034F2-0000-1000-8000-00805F9B34FB";
-    private bool isScanning = false;
+    [SerializeField]
+    private IntEventSO m_heartRateUpdatedEvent; // Event to be called when heart rate is updated
+    // use 128bits UUID for heart rate service and characteristic 
+    private string m_heartRateServiceUUID = "000056FF-0000-1000-8000-00805F9B34FB";
+    private string m_heartRateCharacteristicUUID = "000034F2-0000-1000-8000-00805F9B34FB";
+    private bool m_isScanning = false;
 
     public TextMeshProUGUI m_HeartrateText; // UI Text to display heart rate
     //public TextMeshProUGUI m_DebugText; // UI Text to display debug messages
 
     void Start()
     {
-        if (onHeartRateUpdated == null)
-            onHeartRateUpdated = new HeartRateEvent();
-
         InitializeBluetooth();
     }
 
@@ -42,7 +37,7 @@ public class HeartRateMonitor : MonoBehaviour
     void StartScanning()
     {
         //Log("Starting Scan...");
-        isScanning = true;
+        m_isScanning = true;
         Invoke("StopScanning", 20.0f);
         BluetoothLEHardwareInterface.ScanForPeripheralsWithServices(null, (address, name) =>
         {
@@ -50,7 +45,7 @@ public class HeartRateMonitor : MonoBehaviour
             if (address == "78:02:B7:DE:92:26")  // Adjust based on your device
             {
                 BluetoothLEHardwareInterface.StopScan();
-                isScanning = false;
+                m_isScanning = false;
                 //Log("Scan Stopped");
                 ConnectToDevice(address);
             }
@@ -60,11 +55,11 @@ public class HeartRateMonitor : MonoBehaviour
 
     void StopScanning()
     {
-        if (isScanning)
+        if (m_isScanning)
         {
             BluetoothLEHardwareInterface.StopScan();
             //Log("Scan Stopped after timeout");
-            isScanning = false;
+            m_isScanning = false;
         }
     }
 
@@ -79,7 +74,7 @@ public class HeartRateMonitor : MonoBehaviour
             (address, serviceUUID) =>
             {
                 //Log("Service Discovered: " + serviceUUID);
-                if (serviceUUID.ToUpperInvariant() == heartRateServiceUUID.ToUpperInvariant())
+                if (serviceUUID.ToUpperInvariant() == m_heartRateServiceUUID.ToUpperInvariant())
                 {
                     //Log("Heart Rate Service Found, ready to subscribe.");
                     SubscribeToHeartRateService(address, serviceUUID);
@@ -99,14 +94,14 @@ public class HeartRateMonitor : MonoBehaviour
     void SubscribeToHeartRateService(string address, string serviceUUID)
     {
         //Log("Subscribing to Heart Rate Service");
-        BluetoothLEHardwareInterface.SubscribeCharacteristicWithDeviceAddress(address, serviceUUID, heartRateCharacteristicUUID, null,
+        BluetoothLEHardwareInterface.SubscribeCharacteristicWithDeviceAddress(address, serviceUUID, m_heartRateCharacteristicUUID, null,
             (deviceAddress, characteristicUUID, data) =>
             {
                 if (data != null && data.Length > 1)
                 {
                     int heartRate = data[8];
-                    m_HeartrateText.text = $"Heart Rate: {heartRate} BPM";
-                    onHeartRateUpdated.Invoke(heartRate);
+                    //m_HeartrateText.text = $"Heart Rate: {heartRate} BPM";
+                    m_heartRateUpdatedEvent.RaiseEvent(heartRate, this);
                 }
                 else
                 {
