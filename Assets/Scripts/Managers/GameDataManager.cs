@@ -22,7 +22,7 @@ public class GameDataManager : MonoBehaviour
         Debug.Log("Heart rate data saved to " + path);
     }
 
-     void Start()
+    void Start()
     {
         FindObjectOfType<GameDataManager>();
     }
@@ -31,16 +31,10 @@ public class GameDataManager : MonoBehaviour
     {
         SaveHeartRateDataToJson();
     }
-}
 
-// 心率数据的封装类，用于 JSON 序列化
-[System.Serializable]
-public class HeartRateDataList
-{
-    public List<int> heartRateData;
-
-    public HeartRateDataList(List<int> heartRateData)
+    void OnDestroy()
     {
-        this.heartRateData = heartRateData;
+        SaveHeartRateDataToJson();
     }
 }
+
