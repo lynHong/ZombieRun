@@ -2,18 +2,21 @@ using UnityEngine;
 
 public class SoundEffectManager : MonoBehaviour
 {
-    [SerializeField]
-    public AudioSource audioSource1; // <80
-    [SerializeField]
-    public AudioSource audioSource2; // >160
+    [SerializeField] public AudioSource audioSource1; // <80
+    [SerializeField] public AudioSource audioSource2; // >160
     private int m_heartRate;
+    private bool hasReceivedFirstRate = false;
 
+    [SerializeField] private ObjectEventSO m_zombieVoiceEvent;
 
     void Update()
     {
-        PlayAudioBasedOnRate();
+        if (hasReceivedFirstRate)
+        {
+            PlayAudioBasedOnRate();
+        }
     }
-    // 根据心率值播放相应的音效
+
     private void PlayAudioBasedOnRate()
     {
         if (m_heartRate <= 80)
@@ -21,7 +24,8 @@ public class SoundEffectManager : MonoBehaviour
             if (!audioSource1.isPlaying)
             {
                 audioSource1.Play();
-                audioSource2.Stop(); // 确保第二个音效停止播放
+                m_zombieVoiceEvent?.RaiseEvent(null, this);
+                audioSource2.Stop(); // make sure the second audio source is stopped
             }
         }
         else if (m_heartRate >= 160)
@@ -29,12 +33,12 @@ public class SoundEffectManager : MonoBehaviour
             if (!audioSource2.isPlaying)
             {
                 audioSource2.Play();
-                audioSource1.Stop(); // 确保第一个音效停止播放
+                audioSource1.Stop(); // make sure the first audio source is stopped
             }
         }
         else
         {
-            // 如果心率在80到160之间，确保两个音效都不播放
+            // if the heart rate is between 80 and 160, make sure both audio sources are stopped
             if (audioSource1.isPlaying) audioSource1.Stop();
             if (audioSource2.isPlaying) audioSource2.Stop();
         }
@@ -42,9 +46,10 @@ public class SoundEffectManager : MonoBehaviour
 
     public void OnHeartRateUpdatedEvent(int heartRate)
     {
+        if (!hasReceivedFirstRate)
+        {
+            hasReceivedFirstRate = true;
+        }
         m_heartRate = heartRate;
     }
-
-
-
 }
