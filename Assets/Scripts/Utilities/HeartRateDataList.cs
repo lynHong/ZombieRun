@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-[Serializable]
+[System.Serializable]
 public class HeartRateDataList
 {
-    public List<int> heartRateData;
+    public List<MinuteHeartRate> heartRateData;
 
-    public HeartRateDataList(List<int> heartRateData)
+    public HeartRateDataList(List<MinuteHeartRate> data)
     {
-        this.heartRateData = heartRateData;
+        heartRateData = data;
     }
 }
