@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class moveAnimation : MonoBehaviour
 {
     private float width = 110.0f;
-    private float height = 43.0f;
+    private float height = 100.0f;
     public Text headerText;
     private string myText;
     private GameObject textObject;
@@ -49,19 +49,22 @@ public class moveAnimation : MonoBehaviour
     {
         myText = headerText.text;
 
+        // 更新 RectTransform 的尺寸以适应文本长度
         rTransform.sizeDelta = new Vector2(myText.Length * 11, height);
         setSizeofTarget2();
 
-        transform.position = Vector3.MoveTowards(transform.position, target1.position, speed * Time.deltaTime);
+        // 仅在 x 轴上移动对象
+        Vector3 targetPosition = new Vector3(target1.position.x, transform.position.y, transform.position.z);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
-        if (transform.position == target1.position)
+        // 当到达目标位置时，切换到 target2 的位置，同时更新 pivot
+        if (transform.position == targetPosition)
         {
-            transform.position = target2.position;
+            transform.position = new Vector3(target2.position.x, transform.position.y, transform.position.z);
             rTransform2.pivot = new Vector2(0, 0);
         }
-
-        //StartCoroutine(ResetPosition());
     }
+
 
     private void setSizeofTarget2()
     {
