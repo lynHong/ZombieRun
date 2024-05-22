@@ -1091,6 +1091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource1: {fileID: 238525104}
   audioSource2: {fileID: 238525103}
+  zombieSounds: []
   m_zombieVoiceEvent: {fileID: 11400000, guid: 86285ae253588a64bbeb2c09ab46ff85, type: 2}
 --- !u!82 &238525103
 AudioSource:
@@ -1198,7 +1199,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: bdb798b20d5ac2f438f3a562f4150019, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 821b6440d8e269c40b5a0eb8a44a079d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
   m_Pitch: 1
@@ -3535,6 +3536,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f547b085803bcc4989bfc34badd7f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_sceneName: Settlement
+  m_model: 0
 --- !u!114 &735484757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3568,7 +3571,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 735484756}
         m_TargetAssemblyTypeName: SceneSwitcher, Assembly-CSharp
-        m_MethodName: SwitchToSettlementScene
+        m_MethodName: SwitchToNextScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

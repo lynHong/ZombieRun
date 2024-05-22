@@ -14,7 +14,6 @@ public class HeartRateMonitor : MonoBehaviour
     private bool m_isScanning = false;
 
     public TextMeshProUGUI m_HeartrateText; // UI Text to display heart rate
-    //public TextMeshProUGUI m_DebugText; // UI Text to display debug messages
 
     void Start()
     {
@@ -23,10 +22,10 @@ public class HeartRateMonitor : MonoBehaviour
 
     void InitializeBluetooth()
     {
-        //Log("Initializing Bluetooth...");
+
         BluetoothLEHardwareInterface.Initialize(true, false, () =>
         {
-            //Log("Bluetooth Initialized");
+
             StartScanning();
         }, (error) =>
         {
@@ -36,17 +35,16 @@ public class HeartRateMonitor : MonoBehaviour
 
     void StartScanning()
     {
-        //Log("Starting Scan...");
+
         m_isScanning = true;
         Invoke("StopScanning", 20.0f);
         BluetoothLEHardwareInterface.ScanForPeripheralsWithServices(null, (address, name) =>
         {
-            //Log($"Device Found: Name={name}, Address={address}");
+
             if (address == "78:02:B7:DE:92:26")  // Adjust based on your device
             {
                 BluetoothLEHardwareInterface.StopScan();
                 m_isScanning = false;
-                //Log("Scan Stopped");
                 ConnectToDevice(address);
             }
 
@@ -58,14 +56,12 @@ public class HeartRateMonitor : MonoBehaviour
         if (m_isScanning)
         {
             BluetoothLEHardwareInterface.StopScan();
-            //Log("Scan Stopped after timeout");
             m_isScanning = false;
         }
     }
 
     void ConnectToDevice(string address)
     {
-        //Log("Connecting to Device: " + address);
         BluetoothLEHardwareInterface.ConnectToPeripheral(address,
             (peripheralName) =>
             {
@@ -86,7 +82,6 @@ public class HeartRateMonitor : MonoBehaviour
             },
             (disconnectedAddress) =>
             {
-                //Log("Disconnected from " + disconnectedAddress);
                 m_HeartrateText.text = "Disconnected";
             });
     }
@@ -100,32 +95,13 @@ public class HeartRateMonitor : MonoBehaviour
                 if (data != null && data.Length > 1)
                 {
                     int heartRate = data[8];
-                    //m_HeartrateText.text = $"Heart Rate: {heartRate} BPM";
                     m_heartRateUpdatedEvent?.RaiseEvent(heartRate, this);
                 }
                 else
                 {
                     m_HeartrateText.text = "0";
-                    //Log("Heart Rate Read Failed");
                 }
             });
     }
 
-    // Helper method for //logging messages
-    /*private void //Log(string message, bool isError = false)
-    {
-        if (isError)
-        {
-            Debug.//LogError(message);
-        }
-        else
-        {
-            Debug.//Log(message);
-        }
-        // Update UI with the message, appending new messages to existing ones
-        if (m_DebugText != null)
-        {
-            m_DebugText.text += message + "\n\n"; // Append new message with two newlines for separation
-        }
-    }*/
 }
