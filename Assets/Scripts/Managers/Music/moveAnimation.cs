@@ -71,4 +71,5 @@ public class moveAnimation : MonoBehaviour
         rTransform2.pivot = new Vector2(1, 0);
         rTransform2.sizeDelta = new Vector2(myText.Length * 11, height);
     }
+
 }
