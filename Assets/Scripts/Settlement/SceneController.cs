@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    [SerializeField] private string m_sceneName; // 设置目标场景名称
+    [SerializeField] private string m_sceneName;
     [SerializeField] private int m_model;
 
 
@@ -16,7 +16,7 @@ public class SceneController : MonoBehaviour
 
     public void QuitGame()
     {
-        SaveModelData(); // 可以选择在退出游戏时保存数据
+        SaveModelData();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -26,7 +26,7 @@ public class SceneController : MonoBehaviour
 
     private void SaveModelData()
     {
-        PlayerPrefs.SetInt("Model", m_model); // 直接保存model值
-        PlayerPrefs.Save(); // 确保数据立即写入
+        PlayerPrefs.SetInt("Model", m_model);
+        PlayerPrefs.Save();
     }
 }

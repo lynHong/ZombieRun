@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Setting.unity
     guid: ca171789a847f2443ab7c415f0ecf356
   - enabled: 1
+    path: Assets/Scenes/Options.unity
+    guid: 4b151be0d31cd434994b454e4e9f7d31
+  - enabled: 1
     path: Assets/Scenes/ZombieRun.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1

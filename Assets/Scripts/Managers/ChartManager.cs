@@ -10,9 +10,9 @@ public class ChartManager : MonoBehaviour
 
     private List<int> m_averageHeartRateList;
 
+
     private void Start()
     {
-        // Basic chart setup
         SetupChart();
     }
 
@@ -46,7 +46,7 @@ public class ChartManager : MonoBehaviour
 
         for (int i = 0; i < m_averageHeartRateList.Count; i++)
         {
-            chart.AddXAxisData("Minute" + (i + 1));
+            chart.AddXAxisData("" + (i + 1));
             chart.AddData(0, m_averageHeartRateList[i]);
         }
     }
