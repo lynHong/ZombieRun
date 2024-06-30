@@ -19,7 +19,7 @@
                   android:launchMode="singleTask"
                   android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
                   android:hardwareAccelerated="false"
-                  android:name="com.unity3d.player.UnityPlayerActivity">
+                  android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
