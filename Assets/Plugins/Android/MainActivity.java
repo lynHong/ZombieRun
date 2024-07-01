@@ -83,7 +83,25 @@ public class MainActivity extends UnityPlayerActivity
         mSpotifyAppRemote.getPlayerApi().toggleRepeat();
     }
 
- 
+    public void getPlayerState()
+    {
+        mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(playerState -> 
+        {
+            final Track track = playerState.track;
+            if (track != null) 
+            {
+                long playbackPosition = playerState.playbackPosition;
+                long trackDuration = track.duration;
+                String formattedPlaybackPosition = String.format("%d:%02d", 
+                    playbackPosition / 60000, (playbackPosition % 60000) / 1000);
+                String formattedTrackDuration = String.format("%d:%02d", 
+                    trackDuration / 60000, (trackDuration % 60000) / 1000);
+                currentPlaying = track.name + " by " + track.artist.name 
+                    + "\nPosition: " + formattedPlaybackPosition + " : " 
+                    + formattedTrackDuration;
+            }
+        });
+    }
     @Override
     protected void onStart() 
     {
@@ -99,17 +117,10 @@ public class MainActivity extends UnityPlayerActivity
             public void onConnected(SpotifyAppRemote spotifyAppRemote) 
             {
                 mSpotifyAppRemote = spotifyAppRemote;
-                Log.d("MainActivity", "Connected! Yay!");
- 
-                // Now you can start interacting with App Remote
-                connected();
- 
             }
  
             public void onFailure(Throwable throwable) {
                 Log.e("MyActivity", throwable.getMessage(), throwable);
- 
-                // Something went wrong when attempting to connect! Handle errors here
             }
         });
     }
@@ -119,20 +130,5 @@ public class MainActivity extends UnityPlayerActivity
     {
         super.onStop();
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
-    }
- 
-    private void connected() 
-    {
-        // Subscribe to PlayerState
-        mSpotifyAppRemote.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> 
-                {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                        currentPlaying = track.name + " by " + track.artist.name;
-                    }
-                });
     }
 }

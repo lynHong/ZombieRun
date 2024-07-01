@@ -5,11 +5,10 @@ public class NowPlaying : MonoBehaviour
 {
     public Text nowPlayingText;
     public Slider musicLength;
-    public SpinRecord spinRecord; // 引用 SpinRecord 脚本
+    public SpinRecord spinRecord;
 
     void Start()
     {
-        // 检查 spinRecord 是否已被赋值
         if (spinRecord == null)
         {
             Debug.LogError("SpinRecord script is not assigned in the inspector.");
@@ -29,7 +28,6 @@ public class NowPlaying : MonoBehaviour
             musicLength.value = MusicManager.instance.TimeInSeconds();
             musicLength.maxValue = MusicManager.instance.LengthInSeconds();
 
-            // 控制唱片旋转状态
             if (MusicManager.instance.IsPlaying() && !spinRecord.IsPlaying)
             {
                 spinRecord.StartPlaying();
@@ -45,7 +43,6 @@ public class NowPlaying : MonoBehaviour
             musicLength.value = 0;
             musicLength.maxValue = 1;
 
-            // 停止旋转
             if (spinRecord.IsPlaying)
             {
                 spinRecord.StopPlaying();

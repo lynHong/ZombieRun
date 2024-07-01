@@ -66,6 +66,7 @@ public class SpotifyManager : MonoBehaviour
 
     public void UpdateCurrentPlaying()
     {
+        mainActivityObject.Call("getPlayerState");
         currentPlayingText.text = mainActivityClass.GetStatic<string>("currentPlaying");
     }
 }
