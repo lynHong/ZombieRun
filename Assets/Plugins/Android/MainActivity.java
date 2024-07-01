@@ -36,6 +36,53 @@ public class MainActivity extends UnityPlayerActivity
     {
         mSpotifyAppRemote.getPlayerApi().play("spotify:track:" + trackId);
     }
+
+    public void Pause() 
+    {
+        mSpotifyAppRemote.getPlayerApi().pause();
+    }
+
+    public void Resume() 
+    {
+        mSpotifyAppRemote.getPlayerApi().resume();
+    }
+
+    public void SkipNext() 
+    {
+        mSpotifyAppRemote.getPlayerApi().skipNext();
+    }
+
+    public void SkipPrevious() 
+    {
+        mSpotifyAppRemote.getPlayerApi().skipPrevious();
+    }
+
+    public void PlayPlaylist() 
+    {
+        mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:1yERzbi3nMiw28c1bQQfWo");
+        mSpotifyAppRemote.getPlayerApi().setRepeat(2);
+    }
+ 
+    public void setShuffle(boolean enabled) 
+    {
+        mSpotifyAppRemote.getPlayerApi().setShuffle(enabled);
+    }
+
+    public void toggleShuffle() 
+    {
+        mSpotifyAppRemote.getPlayerApi().toggleShuffle();
+    }
+
+    public void setRepeat(int repeatMode) 
+    {
+        mSpotifyAppRemote.getPlayerApi().setRepeat(repeatMode);
+    }
+
+    public void toggleRepeat() 
+    {
+        mSpotifyAppRemote.getPlayerApi().toggleRepeat();
+    }
+
  
     @Override
     protected void onStart() 
@@ -76,9 +123,6 @@ public class MainActivity extends UnityPlayerActivity
  
     private void connected() 
     {
-        // Play a playlist
-        mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
- 
         // Subscribe to PlayerState
         mSpotifyAppRemote.getPlayerApi()
                 .subscribeToPlayerState()
