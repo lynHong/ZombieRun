@@ -17,9 +17,14 @@ import com.spotify.protocol.types.Track;
  
 public class MainActivity extends UnityPlayerActivity 
 {
-    public static MainActivity instance; // For Unity C# to trigger functions here
-    public static String currentPlaying = ""; // For Unity C# to read current playing info
-     
+    public static MainActivity instance;
+    public static String currentSongText = "";
+    public static String currentArtistText = "";
+    public static String songCurrentText = "";
+    public static String songTotalText = "";
+    public static long currentTrackDuration;
+    public static long currentPlaybackPosition; 
+
     private static final String CLIENT_ID = "a19a5e7ac7414ac891ea56a38ee270a6"; // Use your own Client Id
     private static final String REDIRECT_URI = "http://localhost:5000/callback"; // Also match this on the app settings page
     private SpotifyAppRemote mSpotifyAppRemote;
@@ -30,8 +35,7 @@ public class MainActivity extends UnityPlayerActivity
         super.onCreate(savedInstanceState);
         instance = this;
     }
-     
-    // Triggered by Unity C# script
+    
     public void PlaySong(String trackId) 
     {
         mSpotifyAppRemote.getPlayerApi().play("spotify:track:" + trackId);
@@ -90,15 +94,16 @@ public class MainActivity extends UnityPlayerActivity
             final Track track = playerState.track;
             if (track != null) 
             {
-                long playbackPosition = playerState.playbackPosition;
-                long trackDuration = track.duration;
-                String formattedPlaybackPosition = String.format("%d:%02d", 
-                    playbackPosition / 60000, (playbackPosition % 60000) / 1000);
+                currentTrackDuration = track.duration;
+                currentPlaybackPosition = playerState.playbackPosition;
                 String formattedTrackDuration = String.format("%d:%02d", 
-                    trackDuration / 60000, (trackDuration % 60000) / 1000);
-                currentPlaying = track.name + " by " + track.artist.name 
-                    + "\nPosition: " + formattedPlaybackPosition + " : " 
-                    + formattedTrackDuration;
+                    currentTrackDuration / 60000, (currentTrackDuration % 60000) / 1000);
+                String formattedPlaybackPosition = String.format("%d:%02d", 
+                    currentPlaybackPosition / 60000, (currentPlaybackPosition % 60000) / 1000);
+                currentSongText = track.name;
+                currentArtistText = track.artist.name; 
+                songCurrentText = formattedPlaybackPosition; 
+                songTotalText = formattedTrackDuration;
             }
         });
     }
@@ -124,7 +129,6 @@ public class MainActivity extends UnityPlayerActivity
             }
         });
     }
- 
     @Override
     protected void onStop() 
     {

@@ -1,14 +1,19 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SpotifyManager : MonoBehaviour
 {
     private AndroidJavaClass mainActivityClass;
-    private AndroidJavaObject mainActivityObject;
-    
-    public Text currentPlayingText;
-
+    private AndroidJavaObject mainActivityObject; 
+    public Text currentSongText;
+    public Text currentArtistText;
+    public Text songCurrentText;
+    public Text songTotalText;
+    public Slider currentDurationSlider;
+    private long playbackPosition;
+    private long trackDuration;
     void Start()
     {
         mainActivityClass = new AndroidJavaClass("com.unity3d.player.MainActivity");
@@ -67,6 +72,13 @@ public class SpotifyManager : MonoBehaviour
     public void UpdateCurrentPlaying()
     {
         mainActivityObject.Call("getPlayerState");
-        currentPlayingText.text = mainActivityClass.GetStatic<string>("currentPlaying");
+        currentSongText.text = mainActivityClass.GetStatic<string>("currentSongText");
+        currentArtistText.text = mainActivityClass.GetStatic<string>("currentArtistText");
+        songCurrentText.text = mainActivityClass.GetStatic<string>("songCurrentText");
+        songTotalText.text = mainActivityClass.GetStatic<string>("songTotalText");
+        playbackPosition = mainActivityClass.GetStatic<long>("currentPlaybackPosition");
+        trackDuration = mainActivityClass.GetStatic<long>("currentTrackDuration");
+        currentDurationSlider.maxValue = trackDuration / 1000;
+        currentDurationSlider.value = playbackPosition / 1000;
     }
 }
