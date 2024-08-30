@@ -9,4 +9,7 @@ Zombie Run is an innovative Exergame that aims to maintain users' heart rates wi
 - **Gamification**: Transforms a regular jog into an engaging experience where users must escape virtual zombies, adding a sense of urgency and fun to the workout.
 - **Progress Tracking**: Offers detailed statistics and progress tracking to motivate continuous improvement and goal setting.
 
+- ## License
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+
  
